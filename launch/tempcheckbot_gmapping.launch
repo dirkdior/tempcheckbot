@@ -1,0 +1,18 @@
+<launch>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="50.0" />
+    </node>
+    
+    <!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.20 0 0 0 0 0 base_link laser 50" /> -->
+    
+    <arg name="set_base_frame" default="base_footprint"/>
+    <arg name="set_odom_frame" default="odom"/>
+    <arg name="set_map_frame"  default="map"/>
+    
+    <node pkg="gmapping" type="slam_gmapping" name="tempcheckbot_slam_gmapping" output="screen">
+        <param name="base_frame" value="$(arg set_base_frame)"/>
+        <param name="odom_frame" value="$(arg set_odom_frame)"/>
+        <param name="map_frame"  value="$(arg set_map_frame)"/>
+        <rosparam command="load" file="$(find turtlebot3_slam)/config/gmapping_params.yaml" />
+    </node>
+</launch>
