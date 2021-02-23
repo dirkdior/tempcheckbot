@@ -1,8 +1,13 @@
 <launch>
 
-    <!-- <node name="move_base" pkg="move_base" type="move_base" /> -->
     <node name="moveturtlebot" pkg="tempcheckbot" type="talker_node" /> 
 
+    <!-- Start environment mapping -->
     <include file="$(find tempcheckbot)/launch/tempcheckbot_mapping.launch" />
 
+    <!-- Start tempcheckbot navigation -->
+    <include file="$(find turtlebot3_navigation)/launch/turtlebot3_navigation.launch">
+        <arg name="map_file" value="$(find tempcheckbot)/maps/map.yaml"/>
+        <arg name="open_rviz" value="true"/>
+    </include>
 </launch>

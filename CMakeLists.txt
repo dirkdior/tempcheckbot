@@ -4,6 +4,7 @@ project(tempcheckbot)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  turtlebot3_navigation
 )
 
 catkin_package(
