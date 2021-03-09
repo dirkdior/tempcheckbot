@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   turtlebot3_navigation
+  actionlib
 )
 
 catkin_package(
