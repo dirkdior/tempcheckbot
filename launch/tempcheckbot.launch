@@ -6,8 +6,7 @@
     <include file="$(find tempcheckbot)/launch/tempcheckbot_mapping.launch" />
 
     <!-- Start tempcheckbot navigation -->
-    <include file="$(find turtlebot3_navigation)/launch/turtlebot3_navigation.launch">
-        <arg name="map_file" value="$(find tempcheckbot)/maps/map.yaml"/>
+    <include file="$(find tempcheckbot)/launch/tempcheckbot_navigation.launch">
         <arg name="open_rviz" value="true"/>
     </include>
 </launch>

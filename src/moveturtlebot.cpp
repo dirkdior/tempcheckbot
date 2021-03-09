@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <stdlib.h>
+#include <std_srvs/Empty.h>
 
 void stopBot(ros::Publisher publisher) {
     geometry_msgs::Twist msg;
@@ -30,49 +31,42 @@ int main(int argc, char** argv)
 
     ros::Publisher publisher = node_handle.advertise<geometry_msgs::Twist>("/cmd_vel", 20, true);
 
-    // double linX = 0.1;
-    // double angZ = 0.0;
-
-    // ros::Rate rate(10);
-    // while(ros::ok())
-    // {
-    //     geometry_msgs::Twist msg;
-        
-    //     msg.linear.x  = linX;
-    //     msg.angular.z = angZ;
-
-    //     publisher.publish(msg);
-    //     ros::spinOnce();
-    //     rate.sleep();
+    //call global_localization service with empty
+    // ros::service::waitForService("global_localization");
+    // ros::ServiceClient clearClient = node_handle.serviceClient<std_srvs::Empty>("/global_localization");
+    // std_srvs::Empty empty_srv;
+    // if(clearClient.call(empty_srv)) {
+    //     ROS_ERROR("reset global_localization");
+    // } else {
+    //     ROS_ERROR("Failed to call the global_localization service");
     // }
 
     while(publisher.getNumSubscribers()==0)
     {
         ROS_ERROR("Waiting for subsribers");
+        // system("rosnode kill /map_server"); //kill map_server node
+        // system("rosnode kill /amcl"); //kill amcl node
         ros::Duration(3).sleep();
     }
 
     ROS_ERROR("Got subsriber");
 
-    moveBot(publisher, 0.3, 0.0);
-    ros::Duration(12).sleep();
-    stopBot(publisher);
-    ros::Duration(1).sleep();
-    moveBot(publisher, 0.0, 0.29);
-    ros::Duration(6).sleep();
-    stopBot(publisher);
-    ros::Duration(1).sleep();
-    moveBot(publisher, 0.3, 0.0);
-    ros::Duration(4).sleep();
-    stopBot(publisher);
-    ros::Duration(1).sleep();
-    moveBot(publisher, 0.0, -0.29);
-    ros::Duration(7).sleep();
-    stopBot(publisher);
-    ros::Duration(1).sleep();
-    moveBot(publisher, -0.3, 0.0);
-    ros::Duration(11).sleep();
-    stopBot(publisher);
+    // Spin the robot for 30 seconds to converge amcl particles
+    // moveBot(publisher, 0.01, 0.5);
+    // ros::Duration(30).sleep();
+    // stopBot(publisher);
+
+    //reset global_localization again
+    // if(clearClient.call(empty_srv)) {
+    //     ROS_ERROR("reset global_localization");
+    // } else {
+    //     ROS_ERROR("Failed to call the global_localization service");
+    // }
+
+    // Spin the robot for another 60 seconds to converge amcl particles all over again for accuracy
+    // moveBot(publisher, 0.01, 0.5);
+    // ros::Duration(60).sleep();
+    // stopBot(publisher);
 
     while(ros::ok())
     {

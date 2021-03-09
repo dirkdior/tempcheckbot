@@ -1,0 +1,40 @@
+<launch>
+    <!-- Arguments -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="odom" />
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+  <arg name="map_file" value="$(find tempcheckbot)/maps/map.yaml" />
+
+  <!-- Turtlebot3 -->
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+  <!-- Map server -->
+  <!-- <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/> -->
+
+  <!-- AMCL -->
+  <!-- <include file="$(find turtlebot3_navigation)/launch/amcl.launch"/> -->
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find tempcheckbot)/param/costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find tempcheckbot)/param/costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find tempcheckbot)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find tempcheckbot)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find tempcheckbot)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find tempcheckbot)/param/dwa_local_planner_params.yaml" command="load" />
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+  </node>
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find tempcheckbot)/rviz/turtlebot3_navigation.rviz"/>
+  </group>
+</launch>
