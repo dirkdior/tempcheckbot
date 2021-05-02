@@ -1,4 +1,4 @@
-# tempcheckbot
+# Tempcheckbot Project
 > Autonomous land robot for temperature reading
 >> Built in Simulation with the TurtleBot3 model using ROS and IGN.
 
@@ -13,8 +13,6 @@
 | Package Name      | tempcheckbot |
 | Visualizer        | RViz |
 ---
-<br>
-
 ## Running the Simulation
 Copy the project to your catkin_ws/src workspace
 
