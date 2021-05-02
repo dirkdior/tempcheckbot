@@ -1,5 +1,20 @@
 <launch>
 
+    <node
+        pkg="ros_ign_bridge"
+        type="parameter_bridge"
+        name="ros_ign_bridge"
+        output="screen"
+        args="/cmd_vel@geometry_msgs/Twist]ignition.msgs.Twist">
+    </node>
+
+    <!-- args="/cmd_vel@geometry_msgs/Twist]ignition.msgs.Twist /tf@tf2_msgs/TFMessage[ignition.msgs.Pose_V /odom@nav_msgs/Odometry[ignition.msgs.Odometry /world/turtlebot3_empty_world_ign/model/Turtlebot3_Burger/joint_state@sensor_msgs/JointState[ignition.msgs.Model /scan@sensor_msgs/LaserScan[ignition.msgs.LaserScan">
+            <remap from="/world/turtlebot3_empty_world_ign/model/Turtlebot3_Burger/joint_state" to="/joint_states"/> -->
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="base_link" args="1 0 0 0 0 0 1 base_footprint base_scan 100" /> -->
+
+    <!-- <include file="$(find tempcheckbot)/launch/tempcheckbot_world.launch" /> -->
+
     <node name="moveturtlebot" pkg="tempcheckbot" type="talker_node" /> 
 
     <!-- Start environment mapping -->
